@@ -1,0 +1,7 @@
+
+> back@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 08:23:37 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+{"level":50,"time":1769945019428,"pid":10480,"hostname":"MICTMR","err":{"type":"PrismaClientInitializationError","message":"Authentication failed against database server, the provided database credentials for `johndoe` are not valid.\n\nPlease make sure to provide valid database credentials for the database server at the configured address.","stack":"PrismaClientInitializationError: Authentication failed against database server, the provided database credentials for `johndoe` are not valid.\n\nPlease make sure to provide valid database credentials for the database server at the configured address.\n    at r (C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\node_modules\\@prisma\\client\\src\\runtime\\core\\engines\\library\\LibraryEngine.ts:440:17)\n    at C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\src\\plugins\\prisma.ts:6:3","clientVersion":"6.19.2","errorCode":"P1000","name":"PrismaClientInitializationError"},"msg":"Authentication failed against database server, the provided database credentials for `johndoe` are not valid.\n\nPlease make sure to provide valid database credentials for the database server at the configured address."}
+^C^C

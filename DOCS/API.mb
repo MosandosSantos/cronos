@@ -1,0 +1,64 @@
+# API - Esfera NR1 (Backend)
+
+Base URL: `http://localhost:3001`
+
+## Auth
+- POST `/auth/register`
+- POST `/auth/login`
+- POST `/auth/refresh`
+- POST `/auth/logout`
+
+## Organizacional
+- CRUD `/sites`
+- CRUD `/areas`
+- CRUD `/job-roles`
+- CRUD `/workers`
+
+## Riscos e Plano de Acao
+- CRUD `/risks`
+- CRUD `/action-plans`
+- CRUD `/action-tasks`
+
+## Evidencias
+- GET `/evidences`
+- POST `/evidences` (multipart: `ownerType`, `ownerId`, `file`, `note` opcional)
+- DELETE `/evidences/:id`
+
+## Inspecoes
+- CRUD `/inspections`
+- CRUD `/inspection-items`
+
+## Incidentes
+- CRUD `/incidents`
+
+## PCMSO
+- CRUD `/pcmso-exams`
+
+## Psicossociais
+- CRUD `/psychosocial/surveys`
+- CRUD `/psychosocial/questions`
+- POST `/psychosocial/responses` (anonimo)
+- GET `/psychosocial/responses` (requer auth)
+
+## Dashboards
+- GET `/dashboards/summary`
+
+## Exportacoes
+- GET `/exports/risks.csv`
+- GET `/exports/action-tasks.csv`
+
+## Importacoes
+- POST `/imports/ppra-pcmso/preview`
+- POST `/imports/ppra-pcmso/commit`
+
+## Auth Header
+Para rotas protegidas, usar: `Authorization: Bearer <accessToken>`
+
+## Roles
+- `ADMIN`: pode criar/editar/excluir cadastros e configurações.
+- `USER`: pode operar campo (inspeções, incidentes, evidências) e atualizar tarefas.
+
+Regras aplicadas:
+- ADMIN obrigatório: cadastros organizacionais, riscos, planos de ação, exames PCMSO, surveys/questionários, imports.
+- USER ou ADMIN: inspeções, itens de inspeção, incidentes, evidências, atualização de tarefas.
+- USER pode atualizar apenas `status` em `/action-tasks/:id` (demais campos apenas ADMIN).

@@ -1,0 +1,68 @@
+
+> front@0.1.0 dev
+> next dev
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\mosan\Documents\Sistemas\esferanr1\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\mosan\Documents\Sistemas\esferanr1\front\package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.100.6:3000
+
+✓ Starting...
+✓ Ready in 2.9s
+○ Compiling /login ...
+ GET /login 200 in 203ms (compile: 18ms, render: 184ms)
+ GET /login 200 in 499ms (compile: 41ms, render: 458ms)
+ GET /dashboard 200 in 1935ms (compile: 1793ms, render: 142ms)
+✓ Compiled in 166ms
+✓ Compiled in 176ms
+ GET /login 200 in 438ms (compile: 128ms, render: 310ms)
+ GET /login 200 in 235ms (compile: 6ms, render: 229ms)
+ GET /login 200 in 251ms (compile: 10ms, render: 241ms)
+ GET /login 200 in 260ms (compile: 11ms, render: 249ms)
+ GET /login 200 in 234ms (compile: 16ms, render: 219ms)
+ GET /login 200 in 209ms (compile: 9ms, render: 200ms)
+ GET /login 200 in 205ms (compile: 9ms, render: 196ms)
+ GET /login 200 in 146ms (compile: 8ms, render: 138ms)
+ GET /login 200 in 109ms (compile: 6ms, render: 103ms)
+ GET /login 200 in 115ms (compile: 8ms, render: 108ms)
+ GET /login 200 in 98ms (compile: 11ms, render: 87ms)
+ GET /login 200 in 47ms (compile: 9ms, render: 38ms)
+ GET /dashboard 200 in 222ms (compile: 109ms, render: 113ms)
+ GET /dashboard 200 in 33ms (compile: 6ms, render: 27ms)
+✓ Compiled in 229ms
+✓ Compiled in 100ms
+ GET /dashboard 200 in 224ms (compile: 80ms, render: 144ms)
+✓ Compiled in 68ms
+✓ Compiled in 96ms
+✓ Compiled in 105ms
+ GET /dashboard 200 in 363ms (compile: 105ms, render: 257ms)
+ GET /dashboard 200 in 144ms (compile: 12ms, render: 132ms)
+ GET /dashboard 200 in 138ms (compile: 8ms, render: 129ms)
+ GET /dashboard 200 in 134ms (compile: 7ms, render: 127ms)
+ GET /dashboard 200 in 167ms (compile: 7ms, render: 159ms)
+ GET /dashboard 200 in 183ms (compile: 10ms, render: 173ms)
+ GET /dashboard 200 in 182ms (compile: 9ms, render: 173ms)
+ GET /dashboard 200 in 184ms (compile: 6ms, render: 178ms)
+ GET /dashboard 200 in 175ms (compile: 7ms, render: 168ms)
+ GET /dashboard 200 in 163ms (compile: 8ms, render: 155ms)
+ GET /dashboard 200 in 171ms (compile: 7ms, render: 164ms)
+ GET /dashboard 200 in 129ms (compile: 7ms, render: 123ms)
+ GET /dashboard 200 in 95ms (compile: 5ms, render: 90ms)
+ GET /dashboard 200 in 60ms (compile: 7ms, render: 53ms)
+✓ Compiled in 62ms
+✓ Compiled in 69ms
+✓ Compiled in 93ms
+✓ Compiled in 100ms
+ GET /dashboard 200 in 263ms (compile: 129ms, render: 133ms)
+ GET /dashboard 200 in 403ms (compile: 177ms, render: 226ms)
+ GET /dashboard 200 in 62ms (compile: 9ms, render: 53ms)
+ GET /dashboard 200 in 44ms (compile: 13ms, render: 30ms)
+ GET /dashboard 200 in 57ms (compile: 7ms, render: 50ms)
+ GET /dashboard 200 in 38ms (compile: 8ms, render: 31ms)
+^C^C

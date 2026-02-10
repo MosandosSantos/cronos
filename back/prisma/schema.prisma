@@ -1,0 +1,517 @@
+// Prisma schema for SaaS de Controle de Vencimentos
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SAAS_ADMIN
+  TENANT_ADMIN
+}
+
+enum TenantStatus {
+  LEAD
+  TRIAL
+  ACTIVE
+  SUSPENDED
+}
+
+enum ProposalStatus {
+  SENT
+  NEGOTIATING
+  APPROVED
+  REJECTED
+}
+
+enum ContractStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  CANCELED
+  EXPIRED
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+}
+
+enum DueStatus {
+  VALID
+  DUE_SOON
+  EXPIRED
+}
+
+enum AsoExamKind {
+  ADMISSIONAL
+  PERIODICO
+  RETORNO_TRABALHO
+  MUDANCA_FUNCAO
+  DEMISSIONAL
+  MONITORACAO_PONTUAL
+}
+
+enum TrainingModality {
+  PRESENCIAL
+  SEMIPRESENCIAL
+  EAD
+  APOSTILA
+  VIDEO
+}
+
+enum LeadStage {
+  LEAD
+  CONTATO
+  PROPOSTA
+  NEGOCIACAO
+  FECHADO
+}
+
+enum LeadStatus {
+  ABERTO
+  GANHO
+  PERDIDO
+}
+
+enum ActivityType {
+  CALL
+  WHATSAPP
+  EMAIL
+  MEETING
+  VISIT
+  NOTE
+}
+
+enum LeadTaskStatus {
+  OPEN
+  DONE
+}
+
+enum CrmProposalStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+}
+
+model Tenant {
+  id        String       @id @default(uuid()) @db.Uuid
+  name      String
+  status    TenantStatus @default(LEAD)
+  cnpj      String?
+  segment   String?
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  users                  User[]
+  employees              Employee[]
+  documents              TenantDocument[]
+  employeeAsoRecords      EmployeeAsoRecord[]
+  employeeExamRecords     EmployeeExamRecord[]
+  employeeTrainingRecords EmployeeTrainingRecord[]
+
+  @@unique([name])
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String?  @db.Uuid @map("tenant_id")
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  ownedLeads Lead[] @relation("LeadOwner")
+  clientProfile Client?
+
+  @@index([tenantId])
+}
+
+model Client {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String?  @unique @db.Uuid @map("user_id")
+  fullName     String   @map("full_name")
+  email        String
+  cpf          String?  @unique
+  cnpj         String?  @unique
+  phone        String
+  birthDate    DateTime? @map("birth_date")
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String   @db.Char(2)
+  zipCode      String   @map("zip_code")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+  contracts SaasContract[]
+
+  @@index([fullName])
+  @@index([email])
+  @@index([isActive])
+}
+
+model Lead {
+  id             String     @id @default(uuid()) @db.Uuid
+  companyName    String     @map("company_name")
+  contactName    String?    @map("contact_name")
+  phone          String?
+  email          String?
+  city           String?
+  source         String?
+  tags           String[]   @default([])
+  stage          LeadStage  @default(LEAD)
+  status         LeadStatus @default(ABERTO)
+  estimatedValue Decimal?   @map("estimated_value") @db.Decimal(12, 2)
+  closeReason    String?    @map("close_reason")
+  nextStep       String?    @map("next_step")
+  nextStepAt     DateTime?  @map("next_step_at")
+  ownerId        String     @db.Uuid @map("owner_id")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  owner        User               @relation("LeadOwner", fields: [ownerId], references: [id])
+  activities   LeadActivity[]
+  tasks        LeadTask[]
+  proposals    LeadProposal[]
+  attachments  LeadAttachment[]
+  stageHistory LeadStageHistory[]
+  agendaItems  AgendaItem[]
+
+  @@index([ownerId])
+  @@index([stage])
+  @@index([status])
+  @@index([updatedAt])
+}
+
+model LeadStageHistory {
+  id        String    @id @default(uuid()) @db.Uuid
+  leadId    String    @db.Uuid @map("lead_id")
+  fromStage LeadStage? @map("from_stage")
+  toStage   LeadStage @map("to_stage")
+  changedBy String    @db.Uuid @map("changed_by")
+  changedAt DateTime  @default(now()) @map("changed_at")
+
+  lead Lead @relation(fields: [leadId], references: [id])
+
+  @@index([leadId])
+  @@index([changedAt])
+}
+
+model LeadActivity {
+  id          String       @id @default(uuid()) @db.Uuid
+  leadId      String       @db.Uuid @map("lead_id")
+  type        ActivityType
+  title       String?
+  description String?
+  createdBy   String       @db.Uuid @map("created_by")
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  lead Lead @relation(fields: [leadId], references: [id])
+
+  @@index([leadId])
+  @@index([createdAt])
+}
+
+model LeadTask {
+  id          String         @id @default(uuid()) @db.Uuid
+  leadId      String?        @db.Uuid @map("lead_id")
+  title       String
+  description String?
+  dueAt       DateTime       @map("due_at")
+  reminderAt  DateTime?      @map("reminder_at")
+  status      LeadTaskStatus @default(OPEN)
+  createdBy   String         @db.Uuid @map("created_by")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  lead       Lead?      @relation(fields: [leadId], references: [id])
+  agendaItem AgendaItem?
+
+  @@index([leadId])
+  @@index([dueAt])
+}
+
+model LeadProposal {
+  id          String            @id @default(uuid()) @db.Uuid
+  leadId      String            @db.Uuid @map("lead_id")
+  status      CrmProposalStatus @default(DRAFT)
+  value       Decimal?          @db.Decimal(12, 2)
+  description String?
+  sentAt      DateTime?         @map("sent_at")
+  fileUrl     String?           @map("file_url")
+  fileName    String?           @map("file_name")
+  createdBy   String            @db.Uuid @map("created_by")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  lead Lead @relation(fields: [leadId], references: [id])
+
+  @@index([leadId])
+  @@index([status])
+}
+
+model LeadAttachment {
+  id         String    @id @default(uuid()) @db.Uuid
+  leadId     String?   @db.Uuid @map("lead_id")
+  url        String
+  filename   String
+  mimeType   String?   @map("mime_type")
+  uploadedBy String    @db.Uuid @map("uploaded_by")
+  uploadedAt DateTime  @default(now()) @map("uploaded_at")
+
+  lead Lead? @relation(fields: [leadId], references: [id])
+
+  @@index([leadId])
+}
+
+model AgendaItem {
+  id        String         @id @default(uuid()) @db.Uuid
+  taskId    String?        @unique @db.Uuid @map("task_id")
+  leadId    String?        @db.Uuid @map("lead_id")
+  title     String
+  dateTime  DateTime       @map("date_time")
+  status    LeadTaskStatus @default(OPEN)
+  source    String         @default("LEAD_TASK")
+  createdBy String         @db.Uuid @map("created_by")
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+
+  task LeadTask? @relation(fields: [taskId], references: [id])
+  lead Lead?     @relation(fields: [leadId], references: [id])
+
+  @@index([leadId])
+  @@index([dateTime])
+}
+
+model SaasContact {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  email        String
+  phone        String?
+  companyName  String   @map("company_name")
+  source       String?
+  notes        String?
+  nextActionAt DateTime? @map("next_action_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  proposals SaasProposal[]
+}
+
+model SaasProposal {
+  id            String         @id @default(uuid()) @db.Uuid
+  contactId     String         @db.Uuid @map("contact_id")
+  proposedValue Decimal        @map("proposed_value")
+  validUntil    DateTime       @map("valid_until")
+  status        ProposalStatus
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  contact  SaasContact @relation(fields: [contactId], references: [id])
+  contract SaasContract?
+
+  @@index([contactId])
+}
+
+model SaasContract {
+  id            String         @id @default(uuid()) @db.Uuid
+  clientId      String?        @db.Uuid @map("client_id")
+  proposalId    String?        @db.Uuid @map("proposal_id") @unique
+  startDate     DateTime       @map("start_date")
+  status        ContractStatus
+  endDate       DateTime?      @map("end_date")
+  contractName  String?        @map("plan_name")
+  employeeLimit Int?           @map("employee_limit")
+  contractValue Decimal        @map("contract_value") @db.Decimal(12, 2)
+  billingCycle  BillingCycle   @default(MONTHLY) @map("billing_cycle")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  client      Client?      @relation(fields: [clientId], references: [id])
+  proposal    SaasProposal? @relation(fields: [proposalId], references: [id])
+
+  @@index([clientId])
+  @@index([proposalId])
+  @@index([status])
+}
+
+model CatalogTrainingType {
+  id                 String           @id @default(uuid()) @db.Uuid
+  name               String
+  description        String?
+  targetAudience     String           @map("target_audience")
+  durationHours      Int              @map("duration_hours")
+  isMandatory        Boolean          @default(false) @map("is_mandatory")
+  price              Decimal          @default(0) @db.Decimal(12, 2)
+  didacticMaterial   String?          @map("didactic_material")
+  modality           TrainingModality
+  validityDays       Int              @map("validity_days")
+  isActive           Boolean          @default(true) @map("is_active")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+
+  records EmployeeTrainingRecord[]
+}
+
+model CatalogAsoType {
+  id               String       @id @default(uuid()) @db.Uuid
+  kind             AsoExamKind? @unique
+  name             String
+  description      String?
+  legalBasis       String?      @map("legal_basis")
+  triggerCondition String?      @map("trigger_condition")
+  validityDays     Int          @map("validity_days")
+  isEsocialOnly    Boolean      @default(false) @map("is_esocial_only")
+  isActive         Boolean      @default(true) @map("is_active")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  records EmployeeAsoRecord[]
+}
+
+model CatalogExamType {
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String
+  validityDays  Int      @map("validity_days")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  records EmployeeExamRecord[]
+}
+
+model CatalogReportType {
+  id            String   @id @default(uuid()) @db.Uuid
+  code          String   @unique
+  name          String
+  validityDays  Int      @map("validity_days")
+  generateAlert Boolean  @default(true) @map("generate_alert")
+  alertDays1    Int?     @map("alert_days_1")
+  alertDays2    Int?     @map("alert_days_2")
+  alertDays3    Int?     @map("alert_days_3")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  documents TenantDocument[]
+}
+
+model Employee {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @db.Uuid @map("tenant_id")
+  name          String
+  cpf           String?
+  roleTitle     String?  @map("role_title")
+  admissionDate DateTime? @map("admission_date")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  tenant          Tenant                @relation(fields: [tenantId], references: [id])
+  asoRecords      EmployeeAsoRecord[]
+  examRecords     EmployeeExamRecord[]
+  trainingRecords EmployeeTrainingRecord[]
+
+  @@index([tenantId])
+  @@unique([tenantId, name])
+}
+
+model EmployeeAsoRecord {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @db.Uuid @map("tenant_id")
+  employeeId  String   @db.Uuid @map("employee_id")
+  asoTypeId   String   @db.Uuid @map("aso_type_id")
+  performedAt DateTime @map("performed_at")
+  dueDate     DateTime @map("due_date")
+  status      DueStatus
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant   Tenant         @relation(fields: [tenantId], references: [id])
+  employee Employee       @relation(fields: [employeeId], references: [id])
+  asoType  CatalogAsoType @relation(fields: [asoTypeId], references: [id])
+
+  @@index([tenantId])
+  @@index([employeeId])
+  @@index([dueDate])
+}
+
+model EmployeeExamRecord {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @db.Uuid @map("tenant_id")
+  employeeId  String   @db.Uuid @map("employee_id")
+  examTypeId  String   @db.Uuid @map("exam_type_id")
+  performedAt DateTime @map("performed_at")
+  dueDate     DateTime @map("due_date")
+  status      DueStatus
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id])
+  employee Employee        @relation(fields: [employeeId], references: [id])
+  examType CatalogExamType @relation(fields: [examTypeId], references: [id])
+
+  @@index([tenantId])
+  @@index([employeeId])
+  @@index([dueDate])
+}
+
+model EmployeeTrainingRecord {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @db.Uuid @map("tenant_id")
+  employeeId     String   @db.Uuid @map("employee_id")
+  trainingTypeId String   @db.Uuid @map("training_type_id")
+  performedAt    DateTime @map("performed_at")
+  dueDate        DateTime @map("due_date")
+  status         DueStatus
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tenant       Tenant              @relation(fields: [tenantId], references: [id])
+  employee     Employee            @relation(fields: [employeeId], references: [id])
+  trainingType CatalogTrainingType @relation(fields: [trainingTypeId], references: [id])
+
+  @@index([tenantId])
+  @@index([employeeId])
+  @@index([dueDate])
+}
+
+model TenantDocument {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @db.Uuid @map("tenant_id")
+  reportTypeId String   @db.Uuid @map("report_type_id")
+  issuedAt     DateTime @map("issued_at")
+  dueDate      DateTime @map("due_date")
+  fileUrl      String   @map("file_url")
+  status       DueStatus
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  tenant     Tenant            @relation(fields: [tenantId], references: [id])
+  reportType CatalogReportType @relation(fields: [reportTypeId], references: [id])
+
+  @@index([tenantId])
+  @@index([dueDate])
+}
+
+model AlertSetting {
+  id        String   @id @default(uuid()) @db.Uuid
+  window30  Int      @default(30) @map("window_30")
+  window60  Int      @default(60) @map("window_60")
+  window90  Int      @default(90) @map("window_90")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}

@@ -1,0 +1,11 @@
+
+> back@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 08:29:19 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+{"level":30,"time":1769945363618,"pid":43020,"hostname":"MICTMR","msg":"Server listening at http://127.0.0.1:3001"}
+{"level":30,"time":1769945363621,"pid":43020,"hostname":"MICTMR","msg":"Server listening at http://192.168.100.6:3001"}
+{"level":30,"time":1769945363621,"pid":43020,"hostname":"MICTMR","msg":"server listening on http://127.0.0.1:3001"}
+{"level":30,"time":1769945376032,"pid":43020,"hostname":"MICTMR","reqId":"req-1","req":{"method":"GET","url":"/health","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49813},"msg":"incoming request"}
+{"level":30,"time":1769945376038,"pid":43020,"hostname":"MICTMR","reqId":"req-1","res":{"statusCode":200},"responseTime":6.027999997138977,"msg":"request completed"}
+^C^C

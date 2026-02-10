@@ -1,0 +1,38 @@
+# Tabelas - Esfera NR1 (projecao inicial)
+
+Baseado no PRD e na planilha PPRA/PCMSO/C-A. Campos de contagem e graficos devem ser calculados via queries, nao persistidos.
+
+## Nucleo multi-tenant
+- tenants
+- users
+- sites
+- areas (inclui `accident_monthly_goal` da planilha)
+- job_roles
+- workers
+
+## Riscos e plano de acao
+- risks (PPRA)
+- action_plans
+- action_tasks
+- evidences (owner_type/owner_id)
+
+## Inspecoes
+- inspections
+- inspection_items
+
+## Incidentes / C-A
+- incidents
+
+## Psicossociais
+- psychosocial_surveys
+- psychosocial_questions
+- psychosocial_responses
+
+## PCMSO
+- pcmso_exams
+
+## Observacoes
+- Todas as tabelas: `created_at`, `updated_at`.
+- Relacoes chave: tenant -> site -> area.
+- `risk_type` como enum: BIOLOGICO, FISICO, QUIMICO, OUTRO.
+- `action_tasks.status` como enum: OPEN, IN_PROGRESS, DONE, CANCELED.

@@ -1,0 +1,89 @@
+# Sprints - Esfera NR1 (v1)
+
+Baseado em `DOCS/PRD_Esfera_NR1.md` e na planilha `DOCS/Planilha de Ppra e Pcmso 3.0  Exemplo ePlanilhas.com.br.xlsx`.
+
+## Sprint 0 — Fundamentos
+- Monorepo `back/` e `front/`
+- Padronizar lint/format (single quotes)
+- Fastify app + plugins (cors, helmet, rate limit)
+- Handler padrao de erros + healthcheck `/health`
+- Next.js + Tailwind + layout base (sidebar, topbar, cards)
+- PostgreSQL conexao + migrations base (tenants, users)
+
+## Sprint 1 — Auth + Tenant
+- `POST /auth/register` (cria tenant + user admin)
+- `POST /auth/login` (JWT access/refresh)
+- `POST /auth/refresh`
+- Guard JWT + contexto `tenant_id`
+- Home publica, login, cadastro, redirect pos-login
+
+## Sprint 2 — Cadastros Organizacionais (CAD_AREA/CAD_CARGO/CAD_FUNC)
+- Backend: `sites`, `areas`, `job_roles`, `workers`
+- Front: list/create/edit + filtros
+- Seletor de unidade no topo + breadcrumb simples
+
+## Sprint 3 — Importador v1 (planilha real)
+- Upload + preview + validacao por linha
+- Parsers: `CAD_AREA`, `CAD_CARGO`, `CAD_FUNC`
+- Logs de import com linhas invalidas + idempotencia
+
+## Sprint 4 — Inventario de Riscos (PPRA)
+- Modelo `risks` + migracao
+- CRUD + filtros
+- Parser PPRA -> Risk (mapear Tipo de Risco)
+- Front: lista + form + export CSV/PDF
+
+## Sprint 5 — Plano de Acao + Tarefas
+- Models `action_plans` + `action_tasks`
+- Regras de SLA, due_date e recorrencia (RRULE simples)
+- Auditoria de status
+- Front: board simples + detalhe da tarefa
+
+## Sprint 6 — Evidencias
+- Model `evidences` (owner_type/owner_id)
+- Upload (local dev) + metadados
+- Galeria com filtros (tipo/periodo)
+
+## Sprint 7 — Inspecoes e Checklists
+- Models `inspections` + `inspection_items`
+- Templates JSON por tenant
+- Regra: nao conformidade gera tarefa (flag)
+- Front: criar template + executar checklist
+
+## Sprint 8 — PWA + Offline
+- Manifest + instalacao
+- IndexedDB queue + sync com retry/backoff
+- Endpoints idempotentes para sync
+- UI offline indicators
+
+## Sprint 9 — Incidentes / Quase-acidentes (C-A)
+- Model `incidents`
+- CRUD + endpoint rapido
+- Import C-A -> Incident (opcional)
+- Front: form rapido (mobile-first) + lista
+
+## Sprint 10 — Dashboards (BI)
+- Endpoints agregados (KPIs)
+- Front: cards + graficos + tabelas
+- Filtros por periodo/unidade/area
+
+## Sprint 11 — PCMSO (Exames)
+- Model `pcmsos_exams`
+- Import PCMSO (area/cargo/frequencia)
+- Tela de consulta + filtros
+
+## Sprint 12 — Psicossociais v1
+- Survey, Questions, Responses
+- Token anonimo + limites minimos por recorte
+- Relatorio agregado + geracao de tarefas
+- Front: campanha + pagina anonima + dashboard
+
+## Sprint 13 — Exportacoes + eSocial base (fase 2)
+- Export v1: inventario + plano de acao (CSV/PDF)
+- Mapping risco -> fatores (S-2240)
+- Export assistido + log de erros
+
+## Sprints finais — Docker e Testes
+- Docker (backend/frontend/postgres)
+- Testes minimos (auth, risks, tasks, imports)
+- CI basico

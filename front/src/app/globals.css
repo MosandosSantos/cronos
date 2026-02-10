@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: only light;
+  --bg: #e9f0f3;
+  --bg-strong: #d7e5ee;
+  --card: #ffffff;
+  --ink: #112530;
+  --muted: #5b7282;
+  --primary: #0b6f74;
+  --primary-strong: #075b60;
+  --accent: #74b3c6;
+  --border: #d9e2ea;
+  --shadow: 0 20px 40px -28px rgba(14, 32, 44, 0.45);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 20% 10%, #f5fafc 0%, #eaf2f6 45%, #dfeaf1 100%);
+  color: var(--ink);
+  font-family: var(--font-sans), "Segoe UI", sans-serif;
+}
+
+.bg-atmosphere {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(circle at 85% 0%, rgba(117, 178, 199, 0.35), transparent 45%),
+    linear-gradient(145deg, #e9f2f6 0%, #d9e7f0 50%, #cfe0ea 100%);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(217, 226, 234, 0.7);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+.kpi-card {
+  background: linear-gradient(145deg, rgba(11, 111, 116, 0.65), rgba(7, 91, 96, 0.65));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}

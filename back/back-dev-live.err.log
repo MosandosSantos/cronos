@@ -1,0 +1,30 @@
+C:\Users\mosan\Documents\Sistemas\cronos\back\src\routes\crm-leads.ts:632
+const tags = Array.isArray(body.tags)
+      ^
+
+SyntaxError: Identifier 'tags' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1638:18)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1680:20)
+    at Module._compile (C:\Users\mosan\Documents\Sistemas\cronos\back\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:69:33)
+    at node:internal/modules/cjs/loader:1839:10
+    at require.extensions..jsx.require.extensions..js (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:114:20)
+    at require.extensions.<computed> (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:71:20)
+    at Object.nodeDevHook [as .ts] (C:\Users\mosan\Documents\Sistemas\cronos\back\node_modules\ts-node-dev\lib\hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+C:\Users\mosan\Documents\Sistemas\cronos\back\src\routes\crm-leads.ts:632
+const tags = Array.isArray(body.tags)
+      ^
+
+SyntaxError: Identifier 'tags' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1638:18)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1680:20)
+    at Module._compile (C:\Users\mosan\Documents\Sistemas\cronos\back\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:69:33)
+    at node:internal/modules/cjs/loader:1839:10
+    at require.extensions..jsx.require.extensions..js (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:114:20)
+    at require.extensions.<computed> (C:\Users\mosan\AppData\Local\Temp\ts-node-dev-hook-6226828016728772.js:71:20)
+    at Object.nodeDevHook [as .ts] (C:\Users\mosan\Documents\Sistemas\cronos\back\node_modules\ts-node-dev\lib\hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)

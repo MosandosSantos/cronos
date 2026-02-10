@@ -1,0 +1,7 @@
+
+> back@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 08:22:14 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+{"level":50,"time":1769944937915,"pid":34860,"hostname":"MICTMR","err":{"type":"FastifyError","message":"fastify-plugin: @fastify/multipart - expected '4.x' fastify version, '5.7.2' is installed","stack":"FastifyError: fastify-plugin: @fastify/multipart - expected '4.x' fastify version, '5.7.2' is installed\n    at Object.checkVersion (C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\node_modules\\fastify\\lib\\plugin-utils.js:127:11)\n    at Object.registerPlugin (C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\node_modules\\fastify\\lib\\plugin-utils.js:150:16)\n    at Boot.override (C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\node_modules\\fastify\\lib\\plugin-override.js:29:57)\n    at Boot._loadPlugin (C:\\Users\\mosan\\Documents\\Sistemas\\esferanr1\\back\\node_modules\\avvio\\boot.js:425:25)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","code":"FST_ERR_PLUGIN_VERSION_MISMATCH","name":"FastifyError","statusCode":500},"msg":"fastify-plugin: @fastify/multipart - expected '4.x' fastify version, '5.7.2' is installed"}
+^C^C
