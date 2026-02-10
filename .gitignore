@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Env
+.env
+.env.*
+
+# Next.js
+front/.next/
+front/out/
+
+# Build outputs
+back/dist/
+front/dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
