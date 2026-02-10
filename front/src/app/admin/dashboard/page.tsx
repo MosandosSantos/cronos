@@ -106,7 +106,7 @@ export default function AdminDashboardPage() {
           id: contract.id,
           client: contract.client,
           items: contract.contractName
-            ? [{ type: 'PLAN', label: contract.contractName }]
+            ? [{ type: 'PLAN' as const, label: contract.contractName }]
             : [],
           mrrAmount: Number(contract.contractValue || 0),
           totalAmount: Number(contract.contractValue || 0),

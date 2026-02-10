@@ -38,7 +38,6 @@ export default async function employeeRoutes(app: FastifyInstance) {
     if (client) {
       const contract = await app.prisma.saasContract.findFirst({
         where: { clientId: client.id, status: 'ACTIVE' },
-        include: { entitlement: true },
       });
 
       const limit = contract?.employeeLimit ?? null;
